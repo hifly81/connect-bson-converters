@@ -24,7 +24,7 @@ public class Utility {
         Document doc = new Document("_id", input);
         String jsonString = doc.toJson();
 
-        log.info("json string {}", jsonString);
+        log.debug("json string {}", jsonString);
 
         doc = Document.parse(jsonString);
 
@@ -38,7 +38,7 @@ public class Utility {
         Document doc = new Document("_id", input);
         String jsonString = doc.toJson();
 
-        log.info("json string {}", jsonString);
+        log.debug("json string {}", jsonString);
 
         doc = Document.parse(jsonString);
 
@@ -55,7 +55,7 @@ public class Utility {
         Gson gson = new Gson();
         String jsonString = gson.toJson(jsonObject);
 
-        log.info("json string {}", jsonString);
+        log.debug("json string {}", jsonString);
 
         return new SchemaAndValue(null, jsonString);
     }
