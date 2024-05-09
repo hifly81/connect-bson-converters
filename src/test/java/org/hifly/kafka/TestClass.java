@@ -8,14 +8,14 @@ import java.util.UUID;
 public class TestClass {
 
     @Test
-    public void testByteToString () {
+    public void testByteToJsonString () {
         byte [] b1 = new byte[20];
         new Random().nextBytes(b1);
-        System.out.println(Utility.byteToString(b1));
+        System.out.println(Utility.byteToJsonString(b1));
 
         byte [] b2 = new byte[20];
         new Random().nextBytes(b2);
-        System.out.println(Utility.byteToString(b2));
+        System.out.println(Utility.byteToJsonString(b2));
     }
 
     @Test
@@ -30,11 +30,11 @@ public class TestClass {
     }
 
     @Test
-    public void testByteToRawAndBson () {
+    public void testOracleRawToBson () {
         byte [] b1 = Utility.convertToOracleRaw(UUID.randomUUID());
-        System.out.println(Utility.byteToRawAndBson(b1));
+        System.out.println(Utility.oracleRawToBson(b1));
 
         byte [] b2 = Utility.convertToOracleRaw(UUID.randomUUID());
-        System.out.println(Utility.byteToRawAndBson(b2));
+        System.out.println(Utility.oracleRawToBson(b2));
     }
 }

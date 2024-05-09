@@ -31,7 +31,7 @@ public class Utility {
         return new SchemaAndValue(null, doc);
     }
 
-    public static SchemaAndValue byteToRawAndBson(byte[] value) {
+    public static SchemaAndValue oracleRawToBson(byte[] value) {
 
         String input = new RAW(value).stringValue();
 
@@ -45,7 +45,7 @@ public class Utility {
         return new SchemaAndValue(null, doc);
     }
 
-    public static SchemaAndValue byteToString(byte[] value) {
+    public static SchemaAndValue byteToJsonString(byte[] value) {
         String input = Base64.getEncoder().encodeToString(value);
 
         // Create a JSON object

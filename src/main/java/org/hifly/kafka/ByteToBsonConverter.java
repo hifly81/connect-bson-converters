@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class StringToRawAndBsonConverter implements Converter {
+public class ByteToBsonConverter implements Converter {
 
-    private static final Logger log = LoggerFactory.getLogger(StringToRawAndBsonConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(ByteToBsonConverter.class);
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
@@ -30,7 +30,7 @@ public class StringToRawAndBsonConverter implements Converter {
         }
 
         try {
-            return Utility.byteToRawAndBson(value);
+            return Utility.byteToBson(value);
         } catch (Exception e) {
             throw new DataException(e.getMessage());
         }

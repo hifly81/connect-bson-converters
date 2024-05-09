@@ -4,10 +4,14 @@ import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.storage.Converter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
+public class OracleRawToBsonConverter implements Converter {
 
-public class StringToJsonConverter implements Converter {
+    private static final Logger log = LoggerFactory.getLogger(OracleRawToBsonConverter.class);
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
@@ -24,8 +28,9 @@ public class StringToJsonConverter implements Converter {
         if (value == null) {
             return SchemaAndValue.NULL;
         }
+
         try {
-            return Utility.byteToString(value);
+            return Utility.oracleRawToBson(value);
         } catch (Exception e) {
             throw new DataException(e.getMessage());
         }
