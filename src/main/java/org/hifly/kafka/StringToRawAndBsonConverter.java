@@ -1,4 +1,4 @@
-package it.gse.kafka;
+package org.hifly.kafka;
 
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;

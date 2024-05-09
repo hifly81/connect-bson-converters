@@ -1,4 +1,4 @@
-package it.gse.kafka;
+package org.hifly.kafka;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

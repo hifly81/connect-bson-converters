@@ -1,4 +1,4 @@
-package it.gse.kafka;
+package org.hifly.kafka;
 
 import org.junit.Test;
 
