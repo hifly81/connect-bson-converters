@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class OracleRawToBsonConverter implements Converter {
+public class ByteArrayToBsonKeyConverter implements Converter {
 
-    private static final Logger log = LoggerFactory.getLogger(OracleRawToBsonConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(ByteArrayToBsonKeyConverter.class);
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
@@ -30,12 +30,10 @@ public class OracleRawToBsonConverter implements Converter {
         }
 
         try {
-            return Utility.oracleRawToBson(value);
+            return BsonUtility.byteToBson(value);
         } catch (Exception e) {
             throw new DataException(e.getMessage());
         }
     }
 
-
 }
-

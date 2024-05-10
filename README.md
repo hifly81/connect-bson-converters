@@ -1,9 +1,9 @@
 # Overview
 
-Custom Kafka Connect Converters applied to different binary inputs.
+Custom Kafka Connect Converters applied to different binary inputs to prioduce a MongoDB Bson Document.
 
- - org.hifly.kafka.ByteToBsonConverter - byte [] to base64 to MongoDB Bson
- - org.hifly.kafka.OracleRawToBsonConverter - byte [] to Oracle RAW to MongoDB Bson
+ - org.hifly.kafka.ByteArrayToBsonKeyConverter - byte [] to base64 to MongoDB Bson
+ - org.hifly.kafka.OracleRawToBsonKeyConverter - byte [] to Oracle RAW to MongoDB Bson
 
 
 ## Install oracle jdbc driver in maven local repo
@@ -35,7 +35,7 @@ mvn clean compile assembly:single
     "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
     "connection.uri": "XXXXXXXX",
     "topics": "XXXXXXXX",
-    "key.converter": "org.hifly.kafka.OracleRawToBsonConverter",
+    "key.converter": "org.hifly.kafka.OracleRawToBsonKeyConverter",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
     "value.converter.schemas.enable": "false",
