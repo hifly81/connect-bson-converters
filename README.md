@@ -48,9 +48,12 @@ mvn clean compile assembly:single
     "document.id.strategy": "com.mongodb.kafka.connect.sink.processor.id.strategy.FullKeyStrategy",
     "delete.writemodel.strategy": "com.mongodb.kafka.connect.sink.writemodel.strategy.DeleteOneDefaultStrategy",
     "publish.full.document.only": "true",
-    "transforms": "ReplaceField",
+    "transforms": "ReplaceField, addKeyToValue",
     "transforms.ReplaceField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
-    "transforms.ReplaceField.exclude": "ID,XXXXXXXX,XXXXXXXX"
+    "transforms.ReplaceField.exclude": "ID,XXXXXXXX,XXXXXXXX",
+    "transforms.addKeyToValue.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.addKeyToValue.static.field": "ID",
+    "transforms.addKeyToValue.static.value": "${key}"
   }
 }
 

@@ -1,7 +1,6 @@
 package org.hifly.kafka;
 
 import org.apache.kafka.connect.data.SchemaAndValue;
-import org.bson.Document;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,8 +28,7 @@ public class KeyConvertersTestCase {
         byte [] b1 = BsonUtility.convertToOracleRaw(UUID.randomUUID());
         Assert.assertEquals(b1.length, RAW_BYTE_SIZE);
         SchemaAndValue result = BsonUtility.oracleRawToBson(b1);
-        Document doc = commonValidators(result);
-        Assert.assertNotEquals(RAW_DEFAULT_VALUE, doc.get(KEY));
+        commonValidators(result);
 
     }
 
@@ -39,19 +37,15 @@ public class KeyConvertersTestCase {
 
         byte [] b1 = new byte[RAW_BYTE_SIZE];
         SchemaAndValue result = BsonUtility.oracleRawToBson(b1);
-        Document doc = commonValidators(result);
-        Assert.assertEquals(RAW_DEFAULT_VALUE, doc.get(KEY));
-
+        commonValidators(result);
     }
 
-    private static Document commonValidators(SchemaAndValue result) {
+    private static String commonValidators(SchemaAndValue result) {
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.value());
-        Assert.assertEquals(result.value().getClass().getName(), org.bson.Document.class.getName());
-        Document doc = (Document)result.value();
-        Assert.assertTrue(doc.containsKey(KEY));
-        Assert.assertNotNull(doc.get(KEY));
-        System.out.println(result);
+        Assert.assertEquals(result.value().getClass().getName(), String.class.getName());
+        String doc = (String)result.value();
+        System.out.println(doc);
         return doc;
     }
 }

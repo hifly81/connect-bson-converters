@@ -77,9 +77,7 @@ public class BsonUtility {
 
             log.info("Bson document for json {}", json);
 
-            doc = Document.parse(json);
-
-            return new SchemaAndValue(null, doc);
+            return new SchemaAndValue(null, json);
         } catch (Exception ex) {
             log.error("Error in generating a Bson document - SchemaAndValue.NULL will be returned", ex);
             return SchemaAndValue.NULL;
