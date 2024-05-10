@@ -4,6 +4,7 @@ Custom Kafka Connect Converters applied to different binary inputs to prioduce a
 
  - org.hifly.kafka.ByteArrayToBsonKeyConverter - byte [] to base64 to MongoDB Bson
  - org.hifly.kafka.OracleRawToBsonKeyConverter - byte [] to Oracle RAW to MongoDB Bson
+ - org.hifly.kafka.ByteArrayAndStringConverter - pass through for byte arrays and strings
 
 
 ## Install oracle jdbc driver in maven local repo
