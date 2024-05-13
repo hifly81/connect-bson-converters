@@ -51,9 +51,9 @@ mvn clean compile assembly:single
     "transforms": "ReplaceField, addKeyToValue",
     "transforms.ReplaceField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
     "transforms.ReplaceField.exclude": "ID,XXXXXXXX,XXXXXXXX",
-    "transforms.addKeyToValue.type": "org.apache.kafka.connect.transforms.InsertField$Value",
-    "transforms.addKeyToValue.static.field": "ID",
-    "transforms.addKeyToValue.static.value": "${key}"
+    "transforms.addKeyToValue.type": "org.hifly.kafka.smt.JsonKeyToValue",
+    "transforms.addKeyToValue.valuename": "ID",
+    "transforms.addKeyToValue.idkey": "_id"
   }
 }
 

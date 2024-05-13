@@ -1,6 +1,7 @@
 package org.hifly.kafka.smt;
 
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.transforms.Transformation;
 import org.apache.kafka.connect.transforms.util.SimpleConfig;
@@ -16,13 +17,13 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
     public static final String ROWKEY_CONFIG = "valuename";
 
-    private static final String ID_KEY = "_id";
-
+    public static final String IDKEY_CONFIG = "idkey";
 
     public static final String OVERVIEW_DOC = "Add the record key to the value as a field.";
 
     public static final ConfigDef CONFIG_DEF = new ConfigDef()
-            .define(ROWKEY_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE, ConfigDef.Importance.HIGH, "Field name to add.");
+            .define(ROWKEY_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE, ConfigDef.Importance.HIGH, "Field name to add.")
+            .define(IDKEY_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE, ConfigDef.Importance.HIGH, "Id name to compute.");
 
     private static final String PURPOSE = "Add the record key to the value as a field.";
 
@@ -30,9 +31,12 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
     private String rowKey;
 
+    private String idKey;
+
     public void configure(Map<String, ?> configs) {
         final SimpleConfig config = new SimpleConfig(CONFIG_DEF, configs);
         rowKey = config.getString(ROWKEY_CONFIG);
+        idKey = config.getString(IDKEY_CONFIG);
     }
 
     public R apply(R record) {
@@ -45,7 +49,7 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
         // Tombstone message handling
         if(record.value() == null) {
-            log.info("Tombstone record found for key {}", record.key());
+            log.debug("Tombstone record found for key {}", record.key());
             // Generate a empty value
             value = new HashMap<>();
             return record.newRecord(
@@ -59,28 +63,43 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
             );
         }
 
-        try {
-            value = (Map<String, Object>) record.value();
-        } catch (Exception e) {
-            log.error("Can't parse record.value", e);
-            return record.newRecord(
-                    record.topic(),
-                    record.kafkaPartition(),
-                    null,
-                    record.key(),
-                    record.valueSchema(),
-                    record.value(),
-                    record.timestamp()
-            );
+        if(record.value() instanceof String) {
+            String strValue = (String)record.value();
+            JSONObject jsonObject = new JSONObject(strValue);
+            value = new HashMap<>();
+            jsonObject.keys().forEachRemaining(key -> value.put(key, jsonObject.getString(key)));
+
+        }
+        else {
+            try {
+                value = (Map<String, Object>) record.value();
+            } catch (Exception e) {
+                log.error("Can't parse record.value", e);
+                return record.newRecord(
+                        record.topic(),
+                        record.kafkaPartition(),
+                        null,
+                        record.key(),
+                        record.valueSchema(),
+                        record.value(),
+                        record.timestamp()
+                );
+            }
         }
 
         try {
             // Get the value from a json key
             JSONObject obj = new JSONObject(record.key().toString());
             JSONObject jsonObject = new JSONObject(obj.toString());
-            //Copy key value in value
-            String innerValue = jsonObject.getString(ID_KEY);
-            value.put(rowKey, innerValue);
+
+            try {
+                String inner = jsonObject.getString(idKey);
+                value.put(rowKey, inner);
+            } catch (Exception ex) {
+                JSONObject innerObj = (JSONObject) jsonObject.get(idKey);
+                String inner = innerObj.getString(idKey);
+                value.put(rowKey, inner);
+            }
 
             return record.newRecord(
                     record.topic(),
@@ -92,7 +111,7 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
                     record.timestamp()
             );
         } catch (Exception e) {
-            log.error("Can't parse " + ID_KEY, e);
+            log.error("Can't parse " + idKey, e);
             return record.newRecord(
                     record.topic(),
                     record.kafkaPartition(),
