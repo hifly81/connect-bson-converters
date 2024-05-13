@@ -49,17 +49,16 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
         // Tombstone message handling
         if(record.value() == null) {
-            log.debug("Tombstone record found for key {}", record.key());
-            // Generate a empty value
-            value = new HashMap<>();
+            log.info("Tombstone record found for key {}", record.key());
+
             return record.newRecord(
                     record.topic(),
                     record.kafkaPartition(),
                     null,
-                    record.key(),
-                    record.valueSchema(),
-                    value,
-                    record.timestamp()
+                    null,
+                    null,
+                    null,
+                    null
             );
         }
 
