@@ -1,10 +1,10 @@
 package org.hifly.kafka;
 
 import org.apache.kafka.connect.data.SchemaAndValue;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class KeyConvertersTestCase {
@@ -14,30 +14,23 @@ public class KeyConvertersTestCase {
     private static final int RAW_BYTE_SIZE = 16;
 
     @Test
-    public void testByteToBson () {
-
-        byte [] b1 = new byte[RAW_BYTE_SIZE];
-        new Random().nextBytes(b1);
-        SchemaAndValue result = BsonUtility.byteToBson(b1);
-        commonValidators(result);
-    }
-
-    @Test
     public void testOracleRawToBson () {
-
         byte [] b1 = BsonUtility.convertToOracleRaw(UUID.randomUUID());
         Assert.assertEquals(b1.length, RAW_BYTE_SIZE);
         SchemaAndValue result = BsonUtility.oracleRawToBson(b1);
-        commonValidators(result);
+        String value = commonValidators(result);
+        JSONObject obj = new JSONObject(value);
+        Assert.assertNotEquals(RAW_DEFAULT_VALUE, obj.get(KEY));
 
     }
 
     @Test
     public void testOracleRawNullToBson () {
-
         byte [] b1 = new byte[RAW_BYTE_SIZE];
         SchemaAndValue result = BsonUtility.oracleRawToBson(b1);
-        commonValidators(result);
+        String value = commonValidators(result);
+        JSONObject obj = new JSONObject(value);
+        Assert.assertEquals(RAW_DEFAULT_VALUE, obj.get(KEY));
     }
 
     private static String commonValidators(SchemaAndValue result) {

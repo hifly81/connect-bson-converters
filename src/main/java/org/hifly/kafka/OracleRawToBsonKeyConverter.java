@@ -15,7 +15,6 @@ public class OracleRawToBsonKeyConverter implements Converter {
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
-        // No configuration needed for this simple converter
     }
 
     @Override

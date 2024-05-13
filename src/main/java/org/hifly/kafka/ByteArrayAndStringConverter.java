@@ -1,20 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements. See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.hifly.kafka;
 
 import org.apache.kafka.common.config.ConfigDef;
@@ -29,11 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-/**
- * Pass-through converter for raw byte data.
- *
- * This implementation currently does nothing with the topic names or header names.
- */
 public class ByteArrayAndStringConverter implements Converter, HeaderConverter {
 
     private static final ConfigDef CONFIG_DEF = ConverterConfig.newConfigDef();
@@ -55,9 +33,8 @@ public class ByteArrayAndStringConverter implements Converter, HeaderConverter {
     @Override
     public byte[] fromConnectData(String topic, Schema schema, Object value) {
         if (schema != null && schema.type() != Schema.Type.BYTES) {
-            if (schema.type() == Schema.Type.STRING && value instanceof String) {
-                log.info("Received a string for KEY {} - getBytes() will be sent", value);
-                String result = (String)value;
+            if (schema.type() == Schema.Type.STRING && value instanceof String result) {
+                log.debug("Received a string for KEY {} - its own byte [] representation with default charset will be sent", value);
                 return result.getBytes();
             }
         }
@@ -85,6 +62,5 @@ public class ByteArrayAndStringConverter implements Converter, HeaderConverter {
 
     @Override
     public void close() {
-        // do nothing
     }
 }
