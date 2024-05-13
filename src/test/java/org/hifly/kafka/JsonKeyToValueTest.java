@@ -23,7 +23,7 @@ public class JsonKeyToValueTest {
 
         xform.configure(props);
 
-        String keyValue = "{\"_id\": {\"_id\":\"sdsssss\"}}";
+        String keyValue = "{\"_id\": {\"_id\":\"B7D6D0317F8E6D418CB337B0D9E66466\"}}";
         String strValue = "{\"C_IST\": \"01\"}";
 
         final SinkRecord record = new SinkRecord("", 0, null, keyValue, null, strValue, 0);
@@ -32,8 +32,7 @@ public class JsonKeyToValueTest {
         Assert.assertNotNull(record.key());
         Assert.assertNotNull(record.value());
 
-        System.out.println(transformedRecord.key());
-        System.out.println(transformedRecord.value());
+        print(transformedRecord);
 
     }
 
@@ -46,7 +45,7 @@ public class JsonKeyToValueTest {
 
         xform.configure(props);
 
-        String keyValue = "{\"_id\": {\"_id\":\"sdsssss\"}}";
+        String keyValue = "{\"_id\": {\"_id\":\"B7D6D0317F8E6D418CB337B0D9E66466\"}}";
 
         final SinkRecord record = new SinkRecord("", 0, null, keyValue, null, null, 0);
         final SinkRecord transformedRecord = xform.apply(record);
@@ -54,9 +53,14 @@ public class JsonKeyToValueTest {
         Assert.assertNotNull(record.key());
         Assert.assertNull(record.value());
 
-        System.out.println(transformedRecord.key());
-        System.out.println(transformedRecord.value());
+        print(transformedRecord);
 
+    }
+
+
+    private static void print(SinkRecord transformedRecord) {
+        System.out.println("KEY:" + transformedRecord.key());
+        System.out.println("VALUE:" + transformedRecord.value());
     }
 
 }
