@@ -49,13 +49,28 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
         // Tombstone message handling
         if(record.value() == null) {
-            log.info("Tombstone record found for key {}", record.key());
+
+            // Get the value from a json key
+            JSONObject obj = new JSONObject(record.key().toString());
+            JSONObject jsonObject = new JSONObject(obj.toString());
+
+            String inner;
+            try {
+                inner = jsonObject.getString(idKey);
+            } catch (Exception ex) {
+                JSONObject innerObj = (JSONObject) jsonObject.get(idKey);
+                inner = innerObj.getString(idKey);
+            }
+
+            String keyValue = "{\"_id\":\""+inner+"\"}";
+
+            log.info("Tombstone record found for key {}", keyValue);
 
             return record.newRecord(
                     record.topic(),
                     record.kafkaPartition(),
                     null,
-                    null,
+                    keyValue,
                     null,
                     null,
                     null
