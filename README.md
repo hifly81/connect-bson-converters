@@ -1,15 +1,15 @@
 # Overview
 
-Custom Kafka Connect Converters and SMTs applied to different binary inputs to prioduce a MongoDB Bson Document.
+Custom Kafka Connect Converters and SMTs applied to different binary inputs to produce a MongoDB Bson Document.
 
 Converters:
 
- - org.hifly.kafka.OracleRawToBsonKeyConverter - byte [] to Oracle RAW to MongoDB Bson
- - org.hifly.kafka.ByteArrayAndStringConverter - pass through for byte arrays and strings
+ - _org.hifly.kafka.OracleRawToBsonKeyConverter_ - Convert a _byte []_ to _Oracle RAW_ data type. Oracle RAW is then used to create MongoDB Bson document.
+ - _org.hifly.kafka.ByteArrayAndStringConverter_ - pass through for byte array schema type and string schema type.
 
 SMTs:
 
-- org.hifly.kafka.smt.JsonKeyToValue - get value from record.key and copy on a new field in record.value
+- _org.hifly.kafka.smt.JsonKeyToValue_ - get value from massage _record.key_ and copy on a new field in message _record.value_
 
 
 ## Install oracle jdbc driver in maven local repo
