@@ -1,7 +1,6 @@
 package org.hifly.kafka.smt;
 
 import org.apache.kafka.common.config.ConfigDef;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.transforms.Transformation;
 import org.apache.kafka.connect.transforms.util.SimpleConfig;
@@ -64,7 +63,7 @@ public class JsonKeyToValue<R extends ConnectRecord<R>> implements Transformatio
 
             String keyValue = "{\"_id\":\""+inner+"\"}";
 
-            log.info("Tombstone record found for key {}", keyValue);
+            log.debug("Tombstone record found for key {}", keyValue);
 
             return record.newRecord(
                     record.topic(),

@@ -9,7 +9,7 @@ Converters:
 
 SMTs:
 
-- org.hifly.kafka.smt.JsonKeyToValue - get value from _id and copy on value fields
+- org.hifly.kafka.smt.JsonKeyToValue - get value from record.key and copy on a new field in record.value
 
 
 ## Install oracle jdbc driver in maven local repo
@@ -54,12 +54,15 @@ mvn clean compile assembly:single
     "document.id.strategy": "com.mongodb.kafka.connect.sink.processor.id.strategy.FullKeyStrategy",
     "delete.writemodel.strategy": "com.mongodb.kafka.connect.sink.writemodel.strategy.DeleteOneDefaultStrategy",
     "publish.full.document.only": "true",
-    "transforms": "ReplaceField, addKeyToValue",
+    "transforms": "ReplaceField, addKeyToValue, tsConverter1",
     "transforms.ReplaceField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
     "transforms.ReplaceField.exclude": "ID,XXXXXXXX,XXXXXXXX",
     "transforms.addKeyToValue.type": "org.hifly.kafka.smt.JsonKeyToValue",
     "transforms.addKeyToValue.valuename": "ID",
-    "transforms.addKeyToValue.idkey": "_id"
+    "transforms.addKeyToValue.idkey": "_id",
+    "transforms.tsConverter1.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.tsConverter1.target.type": "dd/MM/yyyy",
+    "transforms.tsConverter1.field": "START_DATE"
   }
 }
 

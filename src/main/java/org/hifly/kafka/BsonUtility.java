@@ -19,7 +19,7 @@ public class BsonUtility {
 
     public static SchemaAndValue oracleRawToBson(byte[] value) {
 
-        String input = null;
+        String input ;
 
         try {
             String raw = new String(value);
