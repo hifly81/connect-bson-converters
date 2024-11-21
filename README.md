@@ -10,6 +10,7 @@ Converters:
 SMTs:
 
 - _org.hifly.kafka.smt.JsonKeyToValue_ - get value from massage _record.key_ and copy on a new field in message _record.value_
+- _org.hifly.kafka.smt.ExplodeJsonString_ - extract json value from a massage field and copy the json fields in the message as top-level fields
 
 
 ## Install oracle jdbc driver in maven local repo
